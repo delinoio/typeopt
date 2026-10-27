@@ -80,9 +80,11 @@ jobs:
           if git diff --name-only "$BASE" "$HEAD" -- 'crates/typeopt' 'Cargo.toml' 'Cargo.lock' 'rust-toolchain' '.github/workflows/CI.yml' | grep -q .; then
             echo 'affected=true' >> "$GITHUB_OUTPUT"
           fi
-      - name: Install Rust toolchain
+      - name: Install Rust toolchain and formatter
         if: steps.typeopt.outputs.affected == 'true'
-        run: rustup show active-toolchain
+        run: |
+          rustup show active-toolchain
+          rustup component add rustfmt
       - name: Check Rust formatting
         if: steps.typeopt.outputs.affected == 'true'
         run: cargo fmt --all --check
