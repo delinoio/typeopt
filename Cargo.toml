@@ -1,0 +1,62 @@
+[workspace]
+resolver = "2"
+members = ["crates/typeopt"]
+
+# The typeopt tests run the tsrs TypeScript compiler on every fixture.
+# Unoptimized, those crates dominate the workspace test time, so build them
+# optimized in the dev and test profiles. Only these dependencies change;
+# workspace crates keep debug builds and debug assertions.
+[profile.dev.package.tsrs_core]
+opt-level = 3
+
+[profile.dev.package.tsrs_ast]
+opt-level = 3
+
+[profile.dev.package.tsrs_checker]
+opt-level = 3
+
+[profile.dev.package.tsrs_compiler]
+opt-level = 3
+
+[profile.dev.package.tsrs_tsoptions]
+opt-level = 3
+
+[profile.dev.package.tsrs_vfs]
+opt-level = 3
+
+[profile.dev.package.tsrs_api]
+opt-level = 3
+
+[profile.dev.package.tsrs_scanner]
+opt-level = 3
+
+[profile.dev.package.tsrs_diagnostics]
+opt-level = 3
+
+# Release profile optimizations
+[profile.release]
+# Enable Link-Time Optimization for smaller binaries
+lto = true
+# Use single codegen unit for better optimization
+codegen-units = 1
+# Strip symbols from the binary
+strip = true
+# Optimize for size with good performance
+opt-level = "z"
+
+# Profile for generating debug symbols (used for Sentry upload before stripping)
+[profile.release-with-debug]
+inherits = "release"
+# Keep debug info for symbol upload
+strip = false
+debug = true
+
+[workspace.dependencies]
+anyhow = "=1.0.103"
+flate2 = "1.0.35"
+libc = "0.2.182"
+rustc-hash = "2.1.1"
+serde = "1.0.219"
+sha2 = "0.11.0"
+tempfile = "3.14.0"
+tracing = "0.1.43"
