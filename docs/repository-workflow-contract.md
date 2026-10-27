@@ -2,7 +2,7 @@
 
 ## Scope
 
-The base repository contains shared instructions, skills, documentation templates and formatting infrastructure. It has no runtime projects, native build workspace, generated protocol bindings, deployment targets or release credentials.
+This repository contains typeopt, its Rust workspace, validation integrations, and shared development infrastructure. It has no deployment targets or release credentials. See [the project index](project-typeopt.md) and [foundation contract](crates-typeopt-foundation.md).
 
 ## Installation
 
@@ -20,7 +20,9 @@ CI requires an explicit comparison and rejects local `--staged` and `--all` mode
 
 Run `pnpm test` for formatter and hook fixtures. CI runs these fixtures and `pnpm format:check --base <sha> --head <sha>` on Ubuntu for pull requests, main pushes and manual dispatch. PR comparisons use the pull request base and head. Push comparisons use the prior and current commits. Manual comparisons use the merge base with `origin/main`; an optional `base` input selects another existing revision. A root push has no previous commit, so CI creates a local empty-tree comparison commit without pushing it. No full manual mode or macOS runners are configured.
 
-Each CI run records the validation revision, comparison revisions, commands and results in its logs and job summary. Runtime and platform acceptance must be added with the owning project. Passing shared fixtures does not establish runtime or release acceptance.
+Each CI run records the validation revision, comparison revisions, commands and results in its logs and job summary. CI explicitly installs the pinned toolchain and its `rustfmt` component before formatting checks. Affected Rust changes run `cargo fmt --all --check` and root `cargo test --locked` on Ubuntu with the pinned Rust toolchain and Node.js 24. CI builds the CLI and tests the Vite adapter with its frozen local lockfile. Manual validation uses the same revision comparison. Passing shared fixtures or Linux CI does not establish macOS arm64 or Excalidraw browser acceptance.
+
+The Cargo workspace preserves the imported dependency lockfile resolutions and optimized tsrs dev/test profiles. Keep the pinned compiler revision and upstream notices. Rust source changes also run `cargo fmt --all` in the pre-commit hook.
 
 ## Assets and licensing
 

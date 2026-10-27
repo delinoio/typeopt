@@ -69,6 +69,36 @@ jobs:
         run: pnpm format:check
       - name: Test formatting and hooks
         run: pnpm test
+      - name: Select typeopt validation
+        id: typeopt
+        env:
+          BASE: ${{ steps.comparison.outputs.base }}
+          HEAD: ${{ steps.comparison.outputs.head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --name-only "$BASE" "$HEAD" -- 'crates/typeopt' 'Cargo.toml' 'Cargo.lock' 'rust-toolchain' '.github/workflows/CI.yml' | grep -q .; then
+            echo 'affected=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install Rust toolchain and formatter
+        if: steps.typeopt.outputs.affected == 'true'
+        run: |
+          rustup show active-toolchain
+          rustup component add rustfmt
+      - name: Check Rust formatting
+        if: steps.typeopt.outputs.affected == 'true'
+        run: cargo fmt --all --check
+      - name: Test typeopt
+        if: steps.typeopt.outputs.affected == 'true'
+        run: cargo test --locked
+      - name: Build CLI for Vite validation
+        if: steps.typeopt.outputs.affected == 'true'
+        run: cargo build --locked
+      - name: Test Vite adapter
+        if: steps.typeopt.outputs.affected == 'true'
+        run: |
+          pnpm --dir crates/typeopt/examples/vite install --ignore-workspace --frozen-lockfile
+          pnpm --dir crates/typeopt/examples/vite test
       - name: Record validation result
         if: always()
         env:
@@ -76,4 +106,4 @@ jobs:
         run: |
           echo 'Commands: pnpm install --frozen-lockfile --ignore-scripts; pnpm format:check; pnpm test' >> "$GITHUB_STEP_SUMMARY"
           echo "Result: $RESULT" >> "$GITHUB_STEP_SUMMARY"
-          echo 'Runtime, account, native platform and release acceptance: not applicable; no projects are included.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Affected typeopt commands: cargo fmt --all --check; cargo test --locked; cargo build --locked; frozen Vite dependency install; Vite adapter tests. See step outcomes for executed checks. macOS arm64 and Excalidraw browser acceptance were not performed.' >> "$GITHUB_STEP_SUMMARY"

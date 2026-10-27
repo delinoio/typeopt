@@ -30,6 +30,9 @@
 
 ## Owning contracts
 
+- [typeopt project index](../docs/project-typeopt.md)
+- [typeopt Rust foundation](../docs/crates-typeopt-foundation.md)
+
 - [Repository defaults](../docs/repository-defaults.md)
 - [Repository workflow](../docs/repository-workflow-contract.md)
 - Register each new project and its domain contracts in [the documentation catalog](../docs/README.md) before implementation.

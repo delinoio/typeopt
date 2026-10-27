@@ -62,6 +62,9 @@
 
 ## Canonical Directory Map
 
+- `docs/project-typeopt.md`: typeopt ownership and integration boundaries.
+- `docs/crates-typeopt-foundation.md`: CLI, safety, Vite and benchmark contract.
+
 - `docs/README.md`: Complete documentation catalog and project onboarding navigation.
 - `docs/repository-defaults.md`: Default technology choices.
 - `docs/repository-workflow-contract.md`: Installation, formatting and CI.

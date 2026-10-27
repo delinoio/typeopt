@@ -1,6 +1,6 @@
 # Documentation Catalog
 
-`docs/` is the source of truth for repository contracts. This base contains no runtime projects.
+`docs/` is the source of truth for repository contracts. This repository owns the typeopt optimizer.
 
 ## Repository contracts
 
@@ -17,7 +17,10 @@
 
 ## Project catalog
 
-No projects are registered. Before implementation, add `project-<id>.md`, at least one `<domain>-<project-or-component>-<contract>.md`, and their links here. Use lowercase kebab-case IDs and domain prefixes `apps`, `cmds`, `servers`, `crates`, `protos`, or `packages`.
+### typeopt
+
+- [Project index](project-typeopt.md)
+- [Rust CLI foundation](crates-typeopt-foundation.md)
 
 ## Instruction update policy
 

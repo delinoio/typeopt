@@ -1,23 +1,23 @@
-# Delino Base
+# typeopt
 
-Shared repository foundation for new Delino projects. No application or product projects are included.
+Experimental Rust CLI for conservative TypeScript optimization before bundling and type-independent JavaScript optimization after bundling.
 
-The base retains development instructions, reusable agent skills, documentation templates, Apache-2.0 licensing, a pinned formatter, Git hooks and CI. Project implementations, project dependencies, installers, generated bindings, deployment configuration and release workflows are excluded.
+See [the CLI guide](crates/typeopt/README.md) for usage, safety boundaries, Vite integration and benchmark procedures. The [project index](docs/project-typeopt.md) and [foundation contract](docs/crates-typeopt-foundation.md) define development requirements.
 
-## Setup
+## Development
 
-Use Node.js 24 and pnpm 10.26.2.
+Use the pinned Rust toolchain, Node.js 24 and pnpm 10.26.2.
 
 ```sh
 pnpm install --frozen-lockfile
+cargo test --locked
+cargo build --locked
+pnpm --dir crates/typeopt/examples/vite install --ignore-workspace --frozen-lockfile
+pnpm --dir crates/typeopt/examples/vite test
 pnpm test
-pnpm format:check --all
+pnpm format:check
 ```
-
-## Add a project
-
-Start with [the documentation catalog](docs/README.md) and [repository instructions](AGENTS.md). Create a project index and at least one domain contract before runtime implementation. Add language workspaces and build, test and release workflows when their first owning project is introduced.
 
 ## License
 
-Repository-owned content is licensed under [Apache-2.0](LICENSE). Imported skills retain their original licenses and notices.
+Repository-owned source uses [Apache-2.0](LICENSE). Compiler licenses and notices are retained in [crates/typeopt/licenses](crates/typeopt/licenses).
